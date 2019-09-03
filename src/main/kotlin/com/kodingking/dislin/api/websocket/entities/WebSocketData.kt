@@ -1,7 +1,10 @@
 package com.kodingking.dislin.api.websocket.entities
 
 import com.google.gson.annotations.SerializedName
-import com.kodingking.dislin.entities.*
+import com.kodingking.dislin.entities.Snowflake
+import com.kodingking.dislin.entities.enums.EnumStatusType
+import com.kodingking.dislin.entities.impl.Activity
+import com.kodingking.dislin.entities.raw.*
 
 open class WebSocketData
 
@@ -21,101 +24,108 @@ data class IdentifyProperties(
 )
 
 data class ReadyData(
-    @SerializedName("v") private val version: Int,
-    private val user: User,
-    @SerializedName("private_chanels") private val privateChannels: ArrayList<Any>,
-    private val guilds: ArrayList<Guild>,
-    @SerializedName("session_id") private val sessionId: String,
-    private val shard: ArrayList<Int>?
+    @SerializedName("v") val version: Int,
+    val user: UserRaw,
+    @SerializedName("private_channels") val privateChannels: ArrayList<Any>,
+    val guilds: ArrayList<GuildRaw>,
+    @SerializedName("session_id") val sessionId: String,
+    val shard: ArrayList<Int>?
 ) : WebSocketData()
 
 data class ChannelPinsUpdateData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    @SerializedName("channel_id") private val channelId: Snowflake,
-    @SerializedName("last_pin_timestamp") private val lastPinTimestamp: String?
+    @SerializedName("guild_id") val guildId: Snowflake,
+    @SerializedName("channel_id") val channelId: Snowflake,
+    @SerializedName("last_pin_timestamp") val lastPinTimestamp: String?
 ) : WebSocketData()
 
 data class GuildBanData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    private val user: User
+    @SerializedName("guild_id") val guildId: Snowflake,
+    val user: UserRaw
 ) : WebSocketData()
 
 data class GuildEmojisUpdateData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    private val emojis: ArrayList<Emoji>
+    @SerializedName("guild_id") val guildId: Snowflake,
+    val emojis: ArrayList<EmojiRaw>
 ) : WebSocketData()
 
 data class GuildIntegrationsUpdateData(
-    @SerializedName("guild_id") private val guildId: Snowflake
+    @SerializedName("guild_id") val guildId: Snowflake
 ) : WebSocketData()
 
 data class GuildMemberRemoveData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    private val user: User
+    @SerializedName("guild_id") val guildId: Snowflake,
+    val user: UserRaw
 ) : WebSocketData()
 
 data class GuildMemberUpdateData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    private val roles: ArrayList<Snowflake>,
-    private val user: User,
-    private val nick: String
+    @SerializedName("guild_id") val guildId: Snowflake,
+    val roles: ArrayList<Snowflake>,
+    val user: UserRaw,
+    val nick: String
 ) : WebSocketData()
 
 data class GuildMembersChunkData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    private val members: ArrayList<Member>
+    @SerializedName("guild_id") val guildId: Snowflake,
+    val members: ArrayList<MemberRaw>
 ) : WebSocketData()
 
 data class GuildRoleData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    private val role: Role
+    @SerializedName("guild_id") val guildId: Snowflake,
+    val role: RoleRaw
 ) : WebSocketData()
 
 data class GuildRoleDeleteData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    @SerializedName("role_id") private val roleId: Snowflake
+    @SerializedName("guild_id") val guildId: Snowflake,
+    @SerializedName("role_id") val roleId: Snowflake
 ) : WebSocketData()
 
 data class MessageDeleteData(
-    private val id: Snowflake,
-    @SerializedName("channel_id") private val channelId: Snowflake,
-    @SerializedName("guild_id") private val guildId: Snowflake?
+    val id: Snowflake,
+    @SerializedName("channel_id") val channelId: Snowflake,
+    @SerializedName("guild_id") val guildId: Snowflake?
 ) : WebSocketData()
 
 data class MessageDeleteBulkData(
-    private val ids: ArrayList<Snowflake>,
-    @SerializedName("channel_id") private val channelId: Snowflake,
-    @SerializedName("guild_id") private val guildId: Snowflake?
+    val ids: ArrayList<Snowflake>,
+    @SerializedName("channel_id") val channelId: Snowflake,
+    @SerializedName("guild_id") val guildId: Snowflake?
 ) : WebSocketData()
 
 data class MessageReactionData(
-    @SerializedName("user_id") private val userId: Snowflake,
-    @SerializedName("channel_id") private val channelId: Snowflake,
-    @SerializedName("message_id") private val messageId: Snowflake,
-    @SerializedName("guild_id") private val guildId: Snowflake?,
-    private val emoji: Emoji
+    @SerializedName("user_id") val userId: Snowflake,
+    @SerializedName("channel_id") val channelId: Snowflake,
+    @SerializedName("message_id") val messageId: Snowflake,
+    @SerializedName("guild_id") val guildId: Snowflake?,
+    val emoji: EmojiRaw
 ) : WebSocketData()
 
 data class MessageReactionRemoveAllData(
-    @SerializedName("channel_id") private val channelId: Snowflake,
-    @SerializedName("message_id") private val messageId: Snowflake,
-    @SerializedName("guild_id") private val guildId: Snowflake?
+    @SerializedName("channel_id") val channelId: Snowflake,
+    @SerializedName("message_id") val messageId: Snowflake,
+    @SerializedName("guild_id") val guildId: Snowflake?
 ) : WebSocketData()
 
 data class TypingStartData(
-    @SerializedName("channel_id") private val channelId: Snowflake,
-    @SerializedName("guild_id") private val guildId: Snowflake?,
-    @SerializedName("user_id") private val userId: Snowflake,
-    private val timestamp: Int
+    @SerializedName("channel_id") val channelId: Snowflake,
+    @SerializedName("guild_id") val guildId: Snowflake?,
+    @SerializedName("user_id") val userId: Snowflake,
+    val timestamp: Int
 ) : WebSocketData()
 
 data class VoiceServerUpdateData(
-    private val token: String,
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    private val endpoint: String
+    val token: String,
+    @SerializedName("guild_id") val guildId: Snowflake,
+    val endpoint: String
 ) : WebSocketData()
 
 data class WebhooksUpdateData(
-    @SerializedName("guild_id") private val guildId: Snowflake,
-    @SerializedName("channel_id") private val channelId: Snowflake
+    @SerializedName("guild_id") val guildId: Snowflake,
+    @SerializedName("channel_id") val channelId: Snowflake
+) : WebSocketData()
+
+data class StatusUpdateData(
+    var since: Int? = null,
+    var game: Activity? = null,
+    var status: EnumStatusType = EnumStatusType.ONLINE,
+    var afk: Boolean = false
 ) : WebSocketData()

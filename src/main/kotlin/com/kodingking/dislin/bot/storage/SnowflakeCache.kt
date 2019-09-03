@@ -2,21 +2,23 @@ package com.kodingking.dislin.bot.storage
 
 import com.kodingking.dislin.entities.Snowflake
 
-class SnowflakeCache<T> {
-
-    val data = hashMapOf<String, T>()
+class SnowflakeCache<T> : HashMap<String, T>() {
 
     operator fun set(key: Any, value: T) {
-        data[when (key) {
-            is String -> key
-            is Long -> key.toString()
-            is Snowflake -> key.raw
-            else -> key.toString()
-        }] = value
+        put(
+            when (key) {
+                is String -> key
+                is Long -> key.toString()
+                is Snowflake -> key.raw
+                else -> key.toString()
+            }, value
+        )
     }
 
-    operator fun get(key: String) = data[key]
-    operator fun get(key: Long) = data[key.toString()]
-    operator fun get(key: Snowflake) = data[key.raw]
+    operator fun get(key: Long) = get(key.toString())
+    operator fun get(key: Snowflake) = get(key.raw)
+
+    fun remove(key: Long) = remove(key.toString())
+    fun remove(key: Snowflake) = remove(key.raw)
 
 }

@@ -16,6 +16,7 @@ import io.ktor.http.cio.websocket.send
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class CoreWebSocket(@Transient val dislin: Dislin, private val url: String) {
 
@@ -46,6 +47,11 @@ class CoreWebSocket(@Transient val dislin: Dislin, private val url: String) {
             send = this::send
             close = this::close
 
+            scope.launch {
+                val reason = this@wss.closeReason.await() ?: return@launch
+                throw Exception("Websocket was closed (${reason.code}): ${reason.message}")
+            }
+
             while (true) {
                 val frame = try {
                     incoming.receive()
@@ -61,7 +67,8 @@ class CoreWebSocket(@Transient val dislin: Dislin, private val url: String) {
         }
     }
 
-    suspend fun stop() = close?.invoke(Exception("Closed"))
+    suspend fun close() = close?.invoke(Exception("Closed"))
     suspend fun send(data: Any) = send?.invoke(DislinData.getGson(dislin).toJson(data))
+    suspend fun send(build: () -> GatewayMessage) = send(build())
 
 }

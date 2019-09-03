@@ -15,7 +15,8 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.3.0")
 
     implementation("io.ktor:ktor-client-core:1.2.3")
     implementation("io.ktor:ktor-client-cio:1.2.3")
@@ -24,7 +25,7 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:3.14.1")
 
-    implementation("io.projectreactor:reactor-core:3.3.0.M3")
+//    implementation("io.projectreactor:reactor-core:3.3.0.M3")
 }
 
 tasks.withType<KotlinCompile> {

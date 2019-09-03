@@ -1,19 +1,26 @@
 package com.kodingking.dislin.api.websocket.entities
 
 import com.kodingking.dislin.api.websocket.core.EventHandler
-import com.kodingking.dislin.bot.handler.gateway.GuildCreateEventHandler
-import com.kodingking.dislin.bot.handler.gateway.MessageCreateEventHandler
-import com.kodingking.dislin.entities.Guild
-import com.kodingking.dislin.entities.Message
+import com.kodingking.dislin.bot.handler.gateway.*
+import com.kodingking.dislin.bot.handler.gateway.channel.ChannelCreateEventHandler
+import com.kodingking.dislin.bot.handler.gateway.channel.ChannelDeleteEventHandler
+import com.kodingking.dislin.bot.handler.gateway.guild.GuildCreateEventHandler
+import com.kodingking.dislin.bot.handler.gateway.guild.GuildUpdateEventHandler
+import com.kodingking.dislin.bot.handler.gateway.message.MessageCreateEventHandler
+import com.kodingking.dislin.bot.handler.gateway.message.MessageDeleteEventHandler
+import com.kodingking.dislin.entities.raw.ChannelRaw
+import com.kodingking.dislin.entities.raw.GuildRaw
+import com.kodingking.dislin.entities.raw.MessageRaw
 
 enum class EnumGatewayEvent(val eventHandler: EventHandler<out Any>? = null, val type: Class<out Any>? = null) {
 
-    CHANNEL_CREATE,
+    READY(ReadyEventHandler(), ReadyData::class.java),
+    CHANNEL_CREATE(ChannelCreateEventHandler(), ChannelRaw::class.java),
     CHANNEL_UPDATE,
-    CHANNEL_DELETE,
+    CHANNEL_DELETE(ChannelDeleteEventHandler(), ChannelRaw::class.java),
     CHANNEL_PINS_UPDATE,
-    GUILD_CREATE(GuildCreateEventHandler(), Guild::class.java),
-    GUILD_UPDATE,
+    GUILD_CREATE(GuildCreateEventHandler(), GuildRaw::class.java),
+    GUILD_UPDATE(GuildUpdateEventHandler(), GuildRaw::class.java),
     GUILD_DELETE,
     GUILD_BAN_ADD,
     GUILD_BAN_REMOVE,
@@ -26,9 +33,9 @@ enum class EnumGatewayEvent(val eventHandler: EventHandler<out Any>? = null, val
     GUILD_ROLE_CREATE,
     GUILD_ROLE_UPDATE,
     GUILD_ROLE_DELETE,
-    MESSAGE_CREATE(MessageCreateEventHandler(), Message::class.java),
+    MESSAGE_CREATE(MessageCreateEventHandler(), MessageRaw::class.java),
     MESSAGE_UPDATE,
-    MESSAGE_DELETE,
+    MESSAGE_DELETE(MessageDeleteEventHandler(), MessageDeleteData::class.java),
     MESSAGE_DELETE_BULK,
     MESSAGE_REACTION_ADD,
     MESSAGE_REACTION_REMOVE,

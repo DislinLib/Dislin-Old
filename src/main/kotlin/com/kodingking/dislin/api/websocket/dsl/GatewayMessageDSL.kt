@@ -1,9 +1,10 @@
 package com.kodingking.dislin.api.websocket.dsl
 
+import com.kodingking.dislin.Dislin
+import com.kodingking.dislin.DislinData
 import com.kodingking.dislin.api.websocket.entities.EnumGatewayOpcode
 import com.kodingking.dislin.api.websocket.entities.GatewayMessage
 import com.kodingking.dislin.api.websocket.entities.WebSocketData
-import com.kodingking.dislin.gson
 
 @DslMarker
 annotation class GatewayMessageDSL
@@ -16,9 +17,9 @@ inline fun gatewayMessage(opcode: EnumGatewayOpcode = EnumGatewayOpcode.HELLO, b
 }
 
 @GatewayMessageDSL
-fun GatewayMessage.data(data: Any) {
-    this.data = gson.toJsonTree(data)
+fun GatewayMessage.data(dislin: Dislin, data: Any) {
+    this.data = DislinData.getGson(dislin).toJsonTree(data)
 }
 
 @GatewayMessageDSL
-fun GatewayMessage.data(generate: () -> WebSocketData) = data(generate())
+fun GatewayMessage.data(dislin: Dislin, generate: () -> WebSocketData) = data(dislin, generate())

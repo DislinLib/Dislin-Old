@@ -10,7 +10,8 @@ object DislinData {
 
     fun getGson(dislin: Dislin) = gsonCache.getOrPut(dislin) {
         GsonBuilder().apply {
-            components(dislin)
+            serializeNulls()
+            components()
         }.create()
     }
 

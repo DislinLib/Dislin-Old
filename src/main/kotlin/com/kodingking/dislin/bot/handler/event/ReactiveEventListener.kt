@@ -11,7 +11,7 @@ class ReactiveEventListener(@Transient private val dislin: Dislin) {
     private val sink = processor.sink()
     private val scheduler = Schedulers.newSingle("Dislin-Reactive")
 
-    fun post(event: Event) = try {
+    fun post(event: Event): Any = try {
         sink.next(event)
     } catch (e: Exception) {
         e.printStackTrace()
@@ -20,6 +20,6 @@ class ReactiveEventListener(@Transient private val dislin: Dislin) {
     fun on(clazz: Class<out Event>): Flux<out Event> = processor.publishOn(scheduler)
         .ofType(clazz)
 
-    inline fun <reified T : Event> on() = on(T::class.java)
+    inline fun <reified T : Event> on() = on(T::class.java).map { it as T }
 
 }

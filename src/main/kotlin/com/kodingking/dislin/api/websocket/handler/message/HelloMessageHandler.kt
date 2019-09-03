@@ -26,7 +26,7 @@ class HelloMessageHandler : MessageHandler() {
 
                 webSocket.send(
                     gatewayMessage(EnumGatewayOpcode.HEARTBEAT) {
-                        data = if (sequenceNumber == null) null else JsonPrimitive(sequenceNumber)
+                        data = if (sequenceNumber == null) JsonPrimitive("null") else JsonPrimitive(sequenceNumber)
                     }
                 )
             }
@@ -34,7 +34,7 @@ class HelloMessageHandler : MessageHandler() {
 
         webSocket.send(
             gatewayMessage(EnumGatewayOpcode.IDENTIFY) {
-                data {
+                data(webSocket.dislin) {
                     identify {
                         token = webSocket.dislin.token
 
